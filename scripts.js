@@ -1,6 +1,28 @@
 // URL base da API
 const API_URL = "http://127.0.0.1:5000";
 
+// ===== EXIBIR NOTIFICAÇÃO (TOAST) =====
+function mostrarToast(mensagem, tipo) {
+    const cor = tipo === 'erro' ? '#dc3545' : '#198754';
+    const icone = tipo === 'erro' ? 'bi-x-circle' : 'bi-check-circle';
+
+    const toast = $(`
+        <div style="background:${cor}; color:white; padding:12px 18px; border-radius:8px; margin-bottom:10px; box-shadow:0 4px 12px rgba(0,0,0,0.15); display:flex; align-items:center; gap:8px; min-width:250px; opacity:0;">
+            <i class="bi ${icone}"></i>
+            <span>${mensagem}</span>
+        </div>
+    `);
+
+    $('#toast-container').append(toast);
+    toast.animate({ opacity: 1 }, 200);
+
+    setTimeout(function() {
+        toast.animate({ opacity: 0 }, 300, function() {
+            toast.remove();
+        });
+    }, 3000);
+}
+
 // Prazo selecionado (padrão 7 dias)
 let prazoSelecionado = 7;
 
@@ -214,7 +236,7 @@ function cadastrarDocumento() {
     };
 
     if (!dados.numero_processo || !dados.titulo) {
-        alert('Número do processo e título são obrigatórios!');
+        mostrarToast('Número do processo e título são obrigatórios!', 'erro');
         return;
     }
 
@@ -225,10 +247,11 @@ function cadastrarDocumento() {
         success: function() {
             bootstrap.Modal.getInstance(document.getElementById('modalDocumento')).hide();
             carregarDocumentos();
+            mostrarToast('Documento cadastrado com sucesso!', 'sucesso');
         },
         error: function(xhr) {
             const msg = xhr.responseJSON ? xhr.responseJSON.message : 'Erro ao cadastrar documento.';
-            alert(msg);
+            mostrarToast(msg, 'erro');
         }
     });
 }
@@ -242,10 +265,11 @@ function deletarDocumento(id) {
         method: 'DELETE',
         success: function() {
             carregarDocumentos();
+            mostrarToast('Documento removido com sucesso!', 'sucesso');
         },
         error: function(xhr) {
             const msg = xhr.responseJSON ? xhr.responseJSON.message : 'Erro ao deletar documento.';
-            alert(msg);
+            mostrarToast(msg, 'erro');
         }
     });
 }
@@ -273,7 +297,7 @@ function registrarEmprestimo() {
     const setor = $('#input-setor').val();
 
     if (!documentoId || !solicitante) {
-        alert('Selecione um documento e informe o nome do solicitante!');
+        mostrarToast('Selecione um documento e informe o nome do solicitante!', 'erro');
         return;
     }
 
@@ -287,14 +311,14 @@ function registrarEmprestimo() {
             prazo_dias: prazoSelecionado
         },
         success: function() {
-            alert('Empréstimo registrado com sucesso!');
+            mostrarToast('Empréstimo registrado com sucesso!', 'sucesso');
             $('#input-solicitante').val('');
             $('#input-setor').val('');
             mostrarAba('emprestimos');
         },
         error: function(xhr) {
             const msg = xhr.responseJSON ? xhr.responseJSON.message : 'Erro ao registrar empréstimo.';
-            alert(msg);
+            mostrarToast(msg, 'erro');
         }
     });
 }
@@ -310,10 +334,11 @@ function registrarDevolucao(id) {
         success: function() {
             carregarEmprestimos();
             carregarDocumentos();
+            mostrarToast('Devolução registrada com sucesso!', 'sucesso');
         },
         error: function(xhr) {
             const msg = xhr.responseJSON ? xhr.responseJSON.message : 'Erro ao registrar devolução.';
-            alert(msg);
+            mostrarToast(msg, 'erro');
         }
     });
 }
