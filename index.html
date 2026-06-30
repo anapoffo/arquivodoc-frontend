@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArquivoDoc</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="navbar navbar-dark">
+    <div class="container-fluid">
+        <span class="navbar-brand">
+            <i class="bi bi-archive"></i> ArquivoDoc
+        </span>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <ul class="nav nav-tabs" id="abas">
+        <li class="nav-item">
+            <a class="nav-link active" href="#" onclick="mostrarAba('acervo')">
+                <i class="bi bi-files"></i> Acervo
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="mostrarAba('Empréstimos')">
+                <i class="bi bi-clock"></i> Empréstimos
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="mostrarAba('registrar')">
+                <i class="bi bi-plus-circle"></i> Registrar
+            </a>
+        </li>
+    </ul>
+
+    <div class="row mt-4" id="resumo">
+        <div class="col-md-4">
+            <div class="card-resumo">
+                <div class="resumo-label">Total de documentos</div>
+                <div class="resumo-valor" id="total-documentos">0</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card-resumo">
+                <div class="resumo-label">Em empréstimo</div>
+                <div class="resumo-valor amarelo" id="total-empréstimos">0</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card-resumo">
+                <div class="resumo-label">Com atraso</div>
+                <div class="resumo-valor vermelho" id="total-atrasados">0</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="secao-acervo" class="secao mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Acervo de documentos</h5>
+            <button class="btn btn-outline-secondary btn-sm" onclick="abrirModalDocumento()">
+                <i class="bi bi-plus"></i> Novo documento
+            </button>
+        </div>
+        <div class="row" id="lista-documentos"></div>
+    </div>
+
+    <div id="secao-Empréstimos" class="secao mt-4" style="display:none">
+        <h5 class="mb-3">Empréstimos ativos</h5>
+        <div id="lista-empréstimos"></div>
+    </div>
+
+    <div id="secao-registrar" class="secao mt-4" style="display:none">
+        <h5 class="mb-3">Registrar empréstimo</h5>
+        <div class="card p-4">
+            <div class="mb-3">
+                <label class="form-label">Documento</label>
+                <select class="form-select" id="select-documento">
+                    <option value="">Selecione um documento disponível...</option>
+                </select>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Nome do solicitante</label>
+                    <input type="text" class="form-control" id="input-solicitante" placeholder="Ex: Maria Paula Santos">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Setor / Instituição</label>
+                    <input type="text" class="form-control" id="input-setor" placeholder="Ex: Assessoria Juridica">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Prazo de devolução</label>
+                <div class="d-flex gap-2">
+                    <button class="btn-prazo" onclick="selecionarPrazo(this, 3)">3 dias</button>
+                    <button class="btn-prazo selecionado" onclick="selecionarPrazo(this, 7)">7 dias</button>
+                    <button class="btn-prazo" onclick="selecionarPrazo(this, 15)">15 dias</button>
+                    <button class="btn-prazo" onclick="selecionarPrazo(this, 30)">30 dias</button>
+                </div>
+            </div>
+            <button class="btn btn-primary w-100" onclick="registrarEmpréstimo()">
+                Registrar empréstimo
+            </button>
+        </div>
+    </div>
+</div>
+<!-- MODAL CADASTRO DE DOCUMENTO -->
+    <div class="modal fade" id="modalDocumento" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cadastrar novo documento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Número do processo</label>
+                            <input type="text" class="form-control" id="modal-numero-processo" placeholder="Ex: 45879/2025-5">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Fundo / Coleção</label>
+                            <input type="text" class="form-control" id="modal-fundo" placeholder="Ex: Administracao">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Título do documento</label>
+                        <input type="text" class="form-control" id="modal-titulo" placeholder="Ex: Processo de contratacao no 045/2023">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Suporte</label>
+                            <select class="form-select" id="modal-suporte">
+                                <option value="Papel">Papel</option>
+                                <option value="Digital">Digital</option>
+                                <option value="Microfilme">Microfilme</option>
+                                <option value="Fotografico">Fotográfico</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Localização física</label>
+                            <input type="text" class="form-control" id="modal-localizacao" placeholder="Ex: Caixa 12, Prateleira B">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Ano inicial</label>
+                            <input type="number" class="form-control" id="modal-ano-inicial" placeholder="Ex: 2023">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Ano final</label>
+                            <input type="number" class="form-control" id="modal-ano-final" placeholder="Ex: 2023">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="cadastrarDocumento()">Salvar documento</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="scripts.js"></script>
+
+</body>
+</html>
