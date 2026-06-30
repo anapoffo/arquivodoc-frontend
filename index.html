@@ -21,17 +21,17 @@
 <div class="container mt-4">
     <ul class="nav nav-tabs" id="abas">
         <li class="nav-item">
-            <a class="nav-link active" href="#" onclick="mostrarAba('acervo')">
+            <a class="nav-link active" href="#" onclick="mostrarAba('acervo'); return false;">
                 <i class="bi bi-files"></i> Acervo
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#" onclick="mostrarAba('Empréstimos')">
-                <i class="bi bi-clock"></i> Empréstimos
-            </a>
+           <a class="nav-link" href="#" onclick="mostrarAba('emprestimos')">
+    <i class="bi bi-clock"></i> Empréstimos
+</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#" onclick="mostrarAba('registrar')">
+            <a class="nav-link" href="#" onclick="mostrarAba('registrar'); return false;">
                 <i class="bi bi-plus-circle"></i> Registrar
             </a>
         </li>
@@ -47,7 +47,7 @@
         <div class="col-md-4">
             <div class="card-resumo">
                 <div class="resumo-label">Em empréstimo</div>
-                <div class="resumo-valor amarelo" id="total-empréstimos">0</div>
+                <div class="resumo-valor amarelo" id="total-emprestimos">0</div>
             </div>
         </div>
         <div class="col-md-4">
@@ -68,9 +68,9 @@
         <div class="row" id="lista-documentos"></div>
     </div>
 
-    <div id="secao-Empréstimos" class="secao mt-4" style="display:none">
+    <div id="secao-emprestimos" class="secao mt-4" style="display:none">
         <h5 class="mb-3">Empréstimos ativos</h5>
-        <div id="lista-empréstimos"></div>
+        <div id="lista-emprestimos"></div>
     </div>
 
     <div id="secao-registrar" class="secao mt-4" style="display:none">
@@ -101,7 +101,7 @@
                     <button class="btn-prazo" onclick="selecionarPrazo(this, 30)">30 dias</button>
                 </div>
             </div>
-            <button class="btn btn-primary w-100" onclick="registrarEmpréstimo()">
+            <button class="btn btn-primary w-100" onclick="registrarEmprestimo()">
                 Registrar empréstimo
             </button>
         </div>
