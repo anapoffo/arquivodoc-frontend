@@ -10,12 +10,16 @@ Interface web para o sistema de controle de empréstimo de documentos arquivíst
 - jQuery
 
 ## Estrutura do projeto
+
+```
 arquivodoc-frontend/
-index.html    # estrutura da página (SPA)
-styles.css    # estilização personalizada
-scripts.js    # lógica e chamadas para a API
+  index.html    (estrutura da pagina - SPA)
+  styles.css    (estilizacao personalizada)
+  scripts.js    (logica e chamadas para a API)
+```
 
 ## Funcionalidades
+
 - **Acervo**: visualização de todos os documentos cadastrados em cards, com cadastro e remoção
 - **Empréstimos**: acompanhamento dos empréstimos ativos, com barra de prazo visual e registro de devolução
 - **Registrar**: formulário para registrar a saída de um documento, com seleção de prazo personalizado
@@ -23,16 +27,21 @@ scripts.js    # lógica e chamadas para a API
 ## Instalação
 
 ### 1. Clone o repositório
-git clone https://github.com/seu-usuario/arquivodoc-frontend.git
+
+```bash
+git clone https://github.com/anapoffo/arquivodoc-frontend.git
+```
 
 ### 2. Execute o back-end
 
-Este front-end depende da API do ArquivoDoc Backend rodando em `http://127.0.0.1:5000`. Certifique-se de que o back-end está em execução antes de usar o front-end. Veja as instruções no repositório [arquivodoc-backend](https://github.com/seu-usuario/arquivodoc-backend).
+Este front-end depende da API do ArquivoDoc Backend rodando em `http://127.0.0.1:5000`. Certifique-se de que o back-end está em execução antes de usar o front-end. Veja as instruções no repositório [arquivodoc-backend](https://github.com/anapoffo/arquivodoc-backend).
 
 ### 3. Abra o front-end
 
 Basta abrir o arquivo `index.html` diretamente no navegador — não é necessário instalar dependências ou rodar um servidor local.
 
 **Observação:** caso o navegador bloqueie as chamadas para a API por restrições de segurança ao abrir arquivos locais, abra o Chrome com a flag abaixo:
-chrome.exe --allow-file-access-from-files
 
+```bash
+chrome.exe --allow-file-access-from-files
+```
